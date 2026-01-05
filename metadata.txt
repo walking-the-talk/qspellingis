@@ -1,0 +1,45 @@
+# This file contains metadata for your plugin. Since 
+# version 2.0 of QGIS this is the proper way to supply 
+# information about a plugin. The old method of 
+# embedding metadata in __init__.py  
+# is no longer supported since version 2.0.
+
+# This file should be included when you package your plugin.# Mandatory items:
+
+[general]
+name=QspellinGIS
+qgisMinimumVersion=3.00
+qgisMaximumVersion=4.99
+supportsQt6=True
+description=A dock widget that allows you to check spelling of attribute data - hence (Q) Spell In GIS
+version=1.0
+author=Chris York (Walking-the-Talk)
+email=chris.york@walking-the-talk.co.uk
+
+about= This plugin is for Spell Checking your attribute data (and allows you to build a custom Personal Word List) - it builds a basic attribute form in a Dock window - text fields are editable and the plugin creates a custom Context Menu for spell checking. On Windows you can use pySpellChecker module. For Linux / Mac / WSL you can also use Enchant. If you are using pySpellChecker as the spelling library you can Bring Your Own Dictionary (i.e. import your own Word Frequency List, which you can create with pySpellChecker) and a custom British English dictionary is included. It is necessarily clunky because QGIS does not currently expose the python bindings to allow the native attribute forms to use this functionality. You can loop through features or use a custom identify tool to view each feature's attributes. When looping through each feature of a selected layer the canvas will Pan or Zoom to each feature.  Plugin REQUIRES: pySpellChecker and optionally Enchant libraries -  which can be loaded using pyEnchant or libenchant2 in your python installation.
+
+tracker=https://github.com/walking-the-talk/qspellingis/issues
+repository=https://github.com/walking-the-talk/qspellingis
+# End of mandatory metadata
+
+# Recommended items:
+
+# Uncomment the following line and add your changelog:
+changelog= v1 - renamed plugin; refactored the code and QGIS4 ready; added pySpellChecker function so that it works cross-platform (also works with Enchant outwith Windows). v0.2 - introduced mapTool function to identify feature attributes. Fixed zoom / pan error (layer geometry / Canvas CRS mismatch). Added more error checking
+
+# Tags are comma separated with spaces allowed
+tags= Spelling, attributes
+
+homepage=https://github.com/walking-the-talk/qspellingis
+category=Plugins
+icon=qspellingis.png
+# experimental flag
+experimental=False
+
+# deprecated flag (applies to the whole plugin, not just a single version)
+deprecated=False
+
+# Since QGIS 3.8, a comma separated list of plugins to be installed
+# (or upgraded) can be specified.
+# Check the documentation for more information.
+plugin_dependencies= pySpellChecker
