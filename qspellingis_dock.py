@@ -322,7 +322,7 @@ class qspellingisDock(QDockWidget, FORM_CLASS):
                 self.formLayout.addRow(fieldlabel,self.currentfeature[-1])
                 fields = self.MapLayer.currentLayer().fields()
                 #do not enable fields from joined layers 
-                if fields.fieldOrigin(row) == 2:# or field_type != 10:
+                if fields.fieldOrigin(row) == 2 or field_type != 10:
                     self.currentfeature[row].setEnabled(False)            
                 else:
                     self.currentfeature[row].setEnabled(True) 
@@ -405,7 +405,6 @@ class qspellingisDock(QDockWidget, FORM_CLASS):
                 if field_type == 10:
                     CurrentLayer.changeAttributeValue(fid,row, self.currentfeature[row].toPlainText())
                     self.currentfeature[row].setStyleSheet("background: None") 
-                    #print('is.editable', fid, self.currentfeature[row].toPlainText())
 #               allow integers and decimals to be updated - for future! Need additional checks when moving feature
 #                elif field_type == 4:
 #                    CurrentLayer.changeAttributeValue(fid,row, float(self.currentfeature[row].currentText()))
@@ -423,14 +422,14 @@ class qspellingisDock(QDockWidget, FORM_CLASS):
                     if field_type == 10:
                         CurrentLayer.changeAttributeValue(fid,row, self.currentfeature[row].toPlainText())
                         self.currentfeature[row].setStyleSheet("background: None") 
-                        #print('edit', fid, self.currentfeature[row].toPlainText())
                 else:
                         pass
         self.selected_feature = CurrentLayer.getFeature(fid)
+        self.feats_od[self.ft_pos] = CurrentLayer.getFeature(fid)
         self.save_record.setStyleSheet("background: DarkSeaGreen")
         self.btn_next.setStyleSheet("background: None")
         self.btn_prev.setStyleSheet("background: None")
-#        self.cbo_attrib_activated()
+
              
 
     def cancel_save(self):
@@ -550,7 +549,8 @@ class qspellingisDock(QDockWidget, FORM_CLASS):
             for row,(field_name, field_type) in enumerate(self.fields):
                 if field_type == 10:
                     prev_value = self.feats_od[self.ft_pos].attribute(field_name) 
-                    if self.currentfeature[row].toPlainText() != str(prev_value):
+                    if str(self.currentfeature[row].toPlainText()) != str(prev_value):
+                        print(str(self.currentfeature[row].toPlainText()),"Previous: ", str(prev_value))
                         self.currentfeature[row].setStyleSheet("background: red")
                         self.btn_next.setStyleSheet("background: red")
                         self.btn_prev.setStyleSheet("background: red")

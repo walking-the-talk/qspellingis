@@ -12,7 +12,7 @@ qgisMinimumVersion=3.00
 qgisMaximumVersion=4.99
 supportsQt6=True
 description=A dock widget that allows you to check spelling of attribute data - hence (Q) Spell In GIS
-version=1.0
+version=1.01
 author=Chris York (Walking-the-Talk)
 email=chris.york@walking-the-talk.co.uk
 
@@ -25,7 +25,7 @@ repository=https://github.com/walking-the-talk/qspellingis
 # Recommended items:
 
 # Uncomment the following line and add your changelog:
-changelog= v1 - renamed plugin; refactored the code and QGIS4 ready; added pySpellChecker function so that it works cross-platform (also works with Enchant outwith Windows). v0.2 - introduced mapTool function to identify feature attributes. Fixed zoom / pan error (layer geometry / Canvas CRS mismatch). Added more error checking
+changelog= v1.01 - minor code edit to allow navigation through layer after clicking Accept; v1 - renamed plugin; refactored the code and QGIS4 ready; added pySpellChecker function so that it works cross-platform (also works with Enchant outwith Windows). v0.2 (was QGISpell) - introduced mapTool function to identify feature attributes. Fixed zoom / pan error (layer geometry / Canvas CRS mismatch). Added more error checking
 
 # Tags are comma separated with spaces allowed
 tags= Spelling, attributes
