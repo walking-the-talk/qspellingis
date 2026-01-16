@@ -79,7 +79,7 @@ class SpellTextEdit(QTextEdit):
         if event is None:
             return
         suggestions = []
-        self.contextMenu = self.createStandardContextMenu(event.pos())
+        self.contextMenu = self.createStandardContextMenu()
         if self.contextMenu is None:
             return
 
