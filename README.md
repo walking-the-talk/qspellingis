@@ -1,5 +1,5 @@
 # QspellinGIS
-![QspellinGIS logo](/qspellinggis.png)
+![QspellinGIS logo](/qspellingis.png)
 
 This is a QGIS plug-in that allows contextual spell-checking of attribute data using python spelling libraries. 
 
