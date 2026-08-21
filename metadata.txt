@@ -10,13 +10,12 @@
 name=QspellinGIS
 qgisMinimumVersion=3.00
 qgisMaximumVersion=4.99
-supportsQt6=True
-description=A dock widget that allows you to check spelling of attribute data - hence (Q) Spell In GIS
-version=1.01
+description= A contextual spell check system for attribute data - hence (Q) Spell In GIS
+version=2.0
 author=Chris York (Walking-the-Talk)
 email=chris.york@walking-the-talk.co.uk
 
-about= This plugin is for Spell Checking your attribute data (and allows you to build a custom Personal Word List) - it builds a basic attribute form in a Dock window - text fields are editable and the plugin creates a custom Context Menu for spell checking. On Windows you can use pySpellChecker module. For Linux / Mac / WSL you can also use Enchant. If you are using pySpellChecker as the spelling library you can Bring Your Own Dictionary (i.e. import your own Word Frequency List, which you can create with pySpellChecker) and a custom British English dictionary is included. It is necessarily clunky because QGIS does not currently expose the python bindings to allow the native attribute forms to use this functionality. You can loop through features or use a custom identify tool to view each feature's attributes. When looping through each feature of a selected layer the canvas will Pan or Zoom to each feature.  Plugin REQUIRES: pySpellChecker and optionally Enchant libraries -  which can be loaded using pyEnchant or libenchant2 in your python installation.
+about= This plugin is for Spell Checking your attribute data as you type (and allows you to build a custom Personal Word List). You can use it with QGIS-native or custom attribute forms, or a basic attribute form in a Dock window. The plugin creates a custom Context Menu for spell checking and highlights misspelled words. On Windows you can currently only use pySpellChecker module. For Linux / Mac / WSL you can also use Enchant. If you are using pySpellChecker as the spelling library you can Bring Your Own Dictionary (i.e. import your own Word Frequency List, which you can create with pySpellChecker) and a custom British English dictionary is included. With the Dock window, you can loop through features or use a custom identify tool to view each feature's attributes (when looping through each feature of a selected layer the canvas can Pan or Zoom to each feature).  Plugin REQUIRES: pySpellChecker and optionally Enchant libraries for Linux / MacOS -  which can be loaded using pyEnchant or libenchant2 in your python installation.
 
 tracker=https://github.com/walking-the-talk/qspellingis/issues
 repository=https://github.com/walking-the-talk/qspellingis
@@ -25,10 +24,10 @@ repository=https://github.com/walking-the-talk/qspellingis
 # Recommended items:
 
 # Uncomment the following line and add your changelog:
-changelog= v1.01 - minor code edit to allow navigation through layer after clicking Accept; v1 - renamed plugin; refactored the code and QGIS4 ready; added pySpellChecker function so that it works cross-platform (also works with Enchant outwith Windows). v0.2 (was QGISpell) - introduced mapTool function to identify feature attributes. Fixed zoom / pan error (layer geometry / Canvas CRS mismatch). Added more error checking
+changelog= v2.0 conversion to work with native QGIS attribute forms (including custom UI) - changes assisted by Junie AI; v1.1 - minor code edit to allow navigation through layer after clicking Accept; v1 - renamed plugin; refactored the code and QGIS4 ready; added pySpellChecker function so that it works cross-platform (also works with Enchant outwith Windows). v0.2 (was QGISpell) - introduced mapTool function to identify feature attributes. Fixed zoom / pan error (layer geometry / Canvas CRS mismatch). Added more error checking
 
 # Tags are comma separated with spaces allowed
-tags= Spelling, attributes
+tags= Spelling, attribute forms
 
 homepage=https://github.com/walking-the-talk/qspellingis
 category=Plugins

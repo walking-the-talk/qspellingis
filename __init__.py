@@ -42,6 +42,20 @@ def classFactory(iface):  # pylint: disable=invalid-name
     :param iface: A QGIS interface instance.
     :type iface: QgsInterface
     """
-    #
+    try:
+        import spellchecker
+    except ImportError:
+        from qgis.PyQt.QtWidgets import QMessageBox
+        QMessageBox.critical(
+            iface.mainWindow(),
+            "QspellinGIS Dependency Error",
+            "The 'pyspellchecker' Python package is required but not found.\n\n"
+            "Please install it to use this plugin. You can typically install it via command line using:\n"
+            "pip install pyspellchecker\n\n"
+            "OPTIONALLY on Linux / WSL and MacOS you can ALSO use Enchant package (https://pypi.org/project/pyenchant/)\n"
+            "After installation, you will need to restart QGIS."
+        )
+        return None
+
     from .qspellingis import qspellingis
     return qspellingis(iface)

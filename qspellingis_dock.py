@@ -45,7 +45,7 @@ from collections import OrderedDict
 from qgis.gui import QgsMapLayerComboBox, QgsFieldComboBox, QgsMessageBar, QgsMapToolIdentifyFeature
 from qgis.core import QgsProject, Qgis, QgsMapLayerProxyModel, QgsFieldProxyModel, edit, QgsFeature, QgsCoordinateReferenceSystem, QgsCoordinateTransform, QgsMapLayerType
 from qgis.PyQt import uic
-from qgis.PyQt.QtCore import pyqtSignal, Qt, QRect, QSize
+from qgis.PyQt.QtCore import pyqtSignal, Qt, QRect, QSize, QSettings
 from qgis.PyQt.QtWidgets import QWidget, QVBoxLayout, QGridLayout, QFrame, QFormLayout, QLabel, QLineEdit, QHBoxLayout, QTabWidget,\
     QScrollArea, QRadioButton, QButtonGroup, QCheckBox, QPushButton, QShortcut, QDockWidget, QSizePolicy, QSpacerItem, QGroupBox, QFileDialog
 from qgis.PyQt.QtGui import QKeySequence, QCursor, QPixmap, QIcon
@@ -92,7 +92,7 @@ class qspellingisDock(QDockWidget, FORM_CLASS):
 
     def closeEvent(self, event):
         self.currentLayer = None
-        self.writeini()
+        self.save_settings()
         self.closingPlugin.emit()
         event.accept()
 
@@ -137,7 +137,7 @@ class qspellingisDock(QDockWidget, FORM_CLASS):
             self.setSpell.addItem("pyenchant")
         self.feedback.setText(enchantment)
         self.changeSpeller()
-        self.readini()
+        self.load_settings()
 
         # Set controls
         self.chk_use_sel.setEnabled(False)
@@ -157,38 +157,41 @@ class qspellingisDock(QDockWidget, FORM_CLASS):
         shortcut.activated.connect(self.btn_next_pressed)
         self.populateLayers()
         
-    def readini(self):
-        if os.path.isfile(os.path.join(os.path.dirname(__file__),"qspellingis.ini")):
-            with open(os.path.join(os.path.dirname(__file__),"qspellingis.ini"), 'r') as f:
-                self.defaults = [line.strip() for line in f]
-                if self.defaults:
-                    self.setSpell.setCurrentText(self.defaults[0]) # spelling library
-                    self.lang.setCurrentText(self.defaults[1]) #language
-                    self.personal = self.defaults[2] # personal word list
-                    pwlFilename = self.personal.split('/')
-                    if "\\" in str(pwlFilename[-1]):
-                        pwlFilename = str(pwlFilename[-1]).split('\\')
-                    self.pwl_filename.setText(pwlFilename[-1])
-                    self.pwl_filename.setToolTip(self.personal)
-                    try:
-                        self.byod_file = self.defaults[3] # Bring-your-own
-                    except:
-                        self.byod_file = ""
-                    if self.byod_file:
-                        self.byod_Filename.setVisible(True)
-                        byod_name = self.byod_file.split('/')
-                        if "\\" in str(byod_name[-1]):
-                            byod_name = str(byod_name[-1]).split('\\')
-                        self.byod_Filename.setText(byod_name[-1])
-                        self.byod_Filename.setToolTip(self.byod_file)
-                    self.spellIn = SpellCheckWrapper(self.setSpell.currentText(),self.lang.currentText(),self.getWords(),self.personal,self.byod_file)
+    def load_settings(self):
+        settings = QSettings()
+        spelling_library = settings.value("qspellingis/spelling_library", "pyspellchecker")
+        language = settings.value("qspellingis/language", "en-gb")
+        pwl_path = settings.value("qspellingis/pwl_path", os.path.join(Path.home(), 'qspellingis_pwl.txt'))
+        byod_file = settings.value("qspellingis/byod_file", "")
 
-    def writeini(self):
-        with open(os.path.join(os.path.dirname(__file__),"qspellingis.ini"), 'w') as f:
-            defaults = self.setSpell.currentText()+'\n'+ self.lang.currentText()+'\n'+ self.personal 
-            if self.byod_file:
-                defaults += '\n'+ self.byod_file         
-            f.write(defaults)   
+        self.setSpell.setCurrentText(spelling_library)
+        self.lang.setCurrentText(language)
+        self.personal = pwl_path
+        self.byod_file = byod_file
+
+        # Update UI with loaded values
+        pwlFilename = self.personal.split('/')
+        if "\\" in str(pwlFilename[-1]):
+            pwlFilename = str(pwlFilename[-1]).split('\\')
+        self.pwl_filename.setText(pwlFilename[-1])
+        self.pwl_filename.setToolTip(self.personal)
+
+        if self.byod_file:
+            self.byod_Filename.setVisible(True)
+            byod_name = self.byod_file.split('/')
+            if "\\" in str(byod_name[-1]):
+                byod_name = str(byod_name[-1]).split('\\')
+            self.byod_Filename.setText(byod_name[-1])
+            self.byod_Filename.setToolTip(self.byod_file)
+        
+        self.spellIn = SpellCheckWrapper(self.setSpell.currentText(), self.lang.currentText(), self.getWords(), self.personal, self.byod_file)
+
+    def save_settings(self):
+        settings = QSettings()
+        settings.setValue("qspellingis/spelling_library", self.setSpell.currentText())
+        settings.setValue("qspellingis/language", self.lang.currentText())
+        settings.setValue("qspellingis/pwl_path", self.personal)
+        settings.setValue("qspellingis/byod_file", self.byod_file)
             
     def tabChanged(self):
         if self.Tabs.currentIndex() == 1:
